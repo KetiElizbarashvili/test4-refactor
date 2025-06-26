@@ -1,0 +1,81 @@
+.page-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.search-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  padding: 0.5rem;
+  width: 60%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.btn {
+  padding: 0.5rem 0.75rem;
+  background: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-number {
+  margin-left: 1rem;
+  font-size: 0.875rem;
+  color: #555;
+}
+
+.item-link {
+  display: block;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+  text-decoration: none;
+  color: #333;
+}
+
+.item-link:hover {
+  background-color: #f5f5f5;
+}
+
+.status,
+.error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1rem;
+}
+
+.error {
+  color: red;
+}
+ 
+
+.skeleton-row {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e6e6e6 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+  height: 100%;
+  border-bottom: 1px solid #ddd;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+ 
