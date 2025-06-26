@@ -1,66 +1,58 @@
 const express = require('express');
-const fs = require('fs');
+const { body, validationResult } = require('express-validator');
 const path = require('path');
+const { readData, writeData } = require('../utils/dataAccess');
+
 const router = express.Router();
 const DATA_PATH = path.join(__dirname, '../../../data/items.json');
 
-// Utility to read data (intentionally sync to highlight blocking issue)
-function readData() {
-  const raw = fs.readFileSync(DATA_PATH);
-  return JSON.parse(raw);
-}
+const validators = [
+  body('name').isString().notEmpty(),
+  body('category').isString().notEmpty(),
+  body('price').isFloat({ gt: 0 }),
+];
 
-// GET /api/items
-router.get('/', (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
-    const data = readData();
-    const { limit, q } = req.query;
-    let results = data;
-
-    if (q) {
-      // Simple substring search (sub‑optimal)
-      results = results.filter(item => item.name.toLowerCase().includes(q.toLowerCase()));
+    let items = await readData(DATA_PATH);
+    if (req.query.q) {
+      const q = req.query.q.toLowerCase();
+      items = items.filter(i => i.name.toLowerCase().includes(q));
     }
-
-    if (limit) {
-      results = results.slice(0, parseInt(limit));
+    if (req.query.limit) {
+      items = items.slice(0, +req.query.limit);
     }
-
-    res.json(results);
+    res.json(items);
   } catch (err) {
     next(err);
   }
 });
 
-// GET /api/items/:id
-router.get('/:id', (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
-    const data = readData();
-    const item = data.find(i => i.id === parseInt(req.params.id));
-    if (!item) {
-      const err = new Error('Item not found');
-      err.status = 404;
-      throw err;
-    }
+    const items = await readData(DATA_PATH);
+    const item = items.find(i => i.id === +req.params.id);
+    if (!item) return res.status(404).json({ error: 'Item not found' });
     res.json(item);
   } catch (err) {
     next(err);
   }
 });
 
-// POST /api/items
-router.post('/', (req, res, next) => {
+router.post('/', validators, async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
   try {
-    // TODO: Validate payload (intentional omission)
-    const item = req.body;
-    const data = readData();
-    item.id = Date.now();
-    data.push(item);
-    fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2));
-    res.status(201).json(item);
+    const items = await readData(DATA_PATH);
+    const newItem = { id: Date.now(), ...req.body, price: +req.body.price };
+    items.push(newItem);
+    await writeData(DATA_PATH, items);
+    res.status(201).json(newItem);
   } catch (err) {
     next(err);
   }
 });
 
 module.exports = router;
+ 

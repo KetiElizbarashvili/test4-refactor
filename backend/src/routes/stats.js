@@ -1,23 +1,37 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const router = express.Router();
-const DATA_PATH = path.join(__dirname, '../../data/items.json');
+const express  = require('express');
+const chokidar = require('chokidar');
+const path     = require('path');
+const { readData } = require('../utils/dataAccess');
 
-// GET /api/stats
-router.get('/', (req, res, next) => {
-  fs.readFile(DATA_PATH, (err, raw) => {
-    if (err) return next(err);
+const router    = express.Router();
+const DATA_PATH = path.join(__dirname, '../../../data/items.json');
 
-    const items = JSON.parse(raw);
-    // Intentional heavy CPU calculation
-    const stats = {
-      total: items.length,
-      averagePrice: items.reduce((acc, cur) => acc + cur.price, 0) / items.length
-    };
+let cache = { total: 0, averagePrice: 0 };
 
-    res.json(stats);
-  });
+async function refreshStats() {
+  try {
+    const items = await readData(DATA_PATH);
+    const total = items.length;
+    const sum   = items.reduce((a, i) => a + i.price, 0);
+    cache = { total, averagePrice: total ? sum / total : 0 };
+  } catch {
+  }
+}
+
+refreshStats();
+
+router.closeWatcher = () => {};
+
+if (process.env.NODE_ENV !== 'test') {
+  const watcher = chokidar.watch(DATA_PATH).on('change', refreshStats);
+  router.closeWatcher = () => watcher.close();
+}
+
+router.refreshStats = refreshStats;
+
+router.get('/', (req, res) => {
+  res.json(cache);
 });
 
 module.exports = router;
+ 
