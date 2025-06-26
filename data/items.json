@@ -1,7 +1,23 @@
 [
-  { "id": 1, "name": "Laptop Pro", "category": "Electronics", "price": 2499 },
-  { "id": 2, "name": "Noise Cancelling Headphones", "category": "Electronics", "price": 399 },
-  { "id": 3, "name": "Ultra‑Wide Monitor", "category": "Electronics", "price": 999 },
-  { "id": 4, "name": "Ergonomic Chair", "category": "Furniture", "price": 799 },
-  { "id": 5, "name": "Standing Desk", "category": "Furniture", "price": 1199 }
+  { "id": 1, "name": "A", "category": "X", "price": 10 },
+  { "id": 2, "name": "B", "category": "Y", "price": 20 },
+  { "id": 3, "name": "C", "category": "Z", "price": 30 },
+  { "id": 4, "name": "Laptop Pro", "category": "Electronics", "price": 2499 },
+  { "id": 5, "name": "Noise Cancelling Headphones", "category": "Electronics", "price": 399 },
+  { "id": 6, "name": "Ultra-Wide Monitor", "category": "Electronics", "price": 999 },
+  { "id": 7, "name": "Ergonomic Chair", "category": "Furniture", "price": 799 },
+  { "id": 8, "name": "Standing Desk", "category": "Furniture", "price": 1199 },
+  { "id": 9, "name": "Espresso Machine", "category": "Appliances", "price": 299 },
+  { "id": 10, "name": "Air Fryer", "category": "Appliances", "price": 149 },
+  { "id": 11, "name": "Smartphone XL", "category": "Electronics", "price": 1099 },
+  { "id": 12, "name": "Bluetooth Speaker", "category": "Electronics", "price": 199 },
+  { "id": 13, "name": "Bookshelf", "category": "Furniture", "price": 299 },
+  { "id": 14, "name": "Floor Lamp", "category": "Decor", "price": 129 },
+  { "id": 15, "name": "Wall Art Set", "category": "Decor", "price": 89 },
+  { "id": 16, "name": "Yoga Mat", "category": "Sports", "price": 49 },
+  { "id": 17, "name": "Dumbbell Set", "category": "Sports", "price": 99 },
+  { "id": 18, "name": "Electric Kettle", "category": "Appliances", "price": 59 },
+  { "id": 19, "name": "Gaming Keyboard", "category": "Electronics", "price": 149 },
+  { "id": 20, "name": "Noise-Reducing Curtains", "category": "Home", "price": 199 }
 ]
+ 
